@@ -54,6 +54,11 @@ func (self *StagingController) GetKeybindings(opts types.KeybindingsOpts) []*typ
 			Description: self.c.Tr.ReturnToFilesPanel,
 		},
 		{
+			Key:         opts.GetKey(opts.Config.Universal.ReturnAlt1),
+			Handler:     self.Escape,
+			Description: self.c.Tr.ReturnToFilesPanel,
+		},
+		{
 			Key:         opts.GetKey(opts.Config.Universal.TogglePanel),
 			Handler:     self.TogglePanel,
 			Description: self.c.Tr.ToggleStagingPanel,
@@ -195,7 +200,8 @@ func (self *StagingController) applySelection(reverse bool) error {
 	}
 
 	if state.SelectingRange() {
-		state.SetLineSelectMode()
+		firstLine, _ := state.SelectedRange()
+		state.SelectLine(firstLine)
 	}
 
 	return nil
